@@ -30,13 +30,13 @@ const Chatbot = () => {
         return;
       }
 
-      const response = await axios.get();
+      const response = await axios.get('http://localhost:8000/shoes/43');
 
       console.log(response.data);
-      const recipe = response.data.choices[0].text.trim();
+     
       const botMessage = {
         _id: new Date().getTime() + 1,
-        text: recipe,
+        text: JSON.stringify(response.data),
         createdAt: new Date(),
         user: {
           _id: 2,
