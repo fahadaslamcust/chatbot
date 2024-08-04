@@ -1,4 +1,5 @@
 import { View, Text } from 'react-native';
+//sadfge
 import React, { useState } from 'react';
 import { GiftedChat, Send } from 'react-native-gifted-chat';
 import axios from 'axios';
