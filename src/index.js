@@ -32,9 +32,9 @@ const Chatbot = () => {
       const response = await axios.get('https://run.mocky.io/v3/e87072c0-933e-42e1-b6a1-37fdcae2b876');
       let arrbrands=['adidas','hush puppies','nike','ndure','reebok']
        let arrcolors=['orange','blue','black','white','brown','pink','green','grey','red','aqua']
-      let s = response.data.shoes
+      let shoes = response.data.shoes
       let photo
-       function col(input){
+       function getColor(input){
          let tokens = input.split(' ')
          let ref 
          for (let i= 0; i < arrcolors.length; i++) {
@@ -46,7 +46,7 @@ const Chatbot = () => {
          }
          return ref
        }
-       function bran(input){
+       function getBrand(input){
         let tokens = input.split(' ')
         let answer 
         for (let i= 0; i < arrbrands.length; i++) {
@@ -58,20 +58,19 @@ const Chatbot = () => {
         }
         return answer
     }
-       let usercol=col(messageText)
-       let userb=bran(messageText)
+       let usercol=getColor(messageText)
+       let userb=getBrand(messageText)
        let f
-       for (let index = 0; index < s.length; index++){ 
-           if (s[index].brand==userb) {
-             f=s[index]
+       for (let index = 0; index < shoes.length; index++){ 
+           if (shoes[index].brand==userb) {
+             f=shoes[index]
              break
           }
-          else if (s[index].color==usercol) {
-              f=s[index]
+          else if (shoes[index].color==usercol) {
+              f=shoes[index]
               break
           }
        }
-
        formattedText=`shoe brand is ${f.brand} and color is ${f.color}`
        photo = f.picture
       const botMessage = {
