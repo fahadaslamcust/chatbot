@@ -34,45 +34,54 @@ const Chatbot = () => {
        let arrcolors=['orange','blue','black','white','brown','pink','green','grey','red','aqua']
       let shoes = response.data.shoes
       let photo
-       function getColor(input){
+      /** Returns users preferred color from input, else returns empty string */ 
+      function getColor(input){
          let tokens = input.split(' ')
-         let ref 
+         let user_color = ''
          for (let i= 0; i < arrcolors.length; i++) {
           let found = tokens.includes(arrcolors[i]) 
           if (found==true) {
-              ref = arrcolors[i]
+              user_color = arrcolors[i]
               break
           }
          }
-         return ref
+         return user_color
        }
+       /** Returns users preferred brand from input, else returns empty string */ 
        function getBrand(input){
         let tokens = input.split(' ')
-        let answer 
+        let user_brand = '' 
         for (let i= 0; i < arrbrands.length; i++) {
             let found = tokens.includes(arrbrands[i])
             if (found==true) {
-                answer = arrbrands[i]
+                user_brand = arrbrands[i]
                 break
             }
         }
-        return answer
+        return user_brand
     }
        let usercol=getColor(messageText)
        let userb=getBrand(messageText)
-       let f
+       let matching_shoes = []
        for (let index = 0; index < shoes.length; index++){ 
-           if (shoes[index].brand==userb) {
-             f=shoes[index]
-             break
+          if (shoes[index].brand==userb) {
+             matching_shoes.push(shoes[index])
+             //break
           }
-          else if (shoes[index].color==usercol) {
-              f=shoes[index]
-              break
+          if ( shoes[index].color == usercol){
+            matching_shoes.push(shoes[index])
           }
+
+          // else if (shoes[index].color==usercol) {
+          //     matching_shoes=shoes[index]
+          //     break
+          // }
        }
-       formattedText=`shoe brand is ${f.brand} and color is ${f.color}`
-       photo = f.picture
+
+       console.log('Users matching options are below')
+       console.log(matching_shoes)
+      //  formattedText=`shoe brand is ${matching_shoes.brand} and color is ${matching_shoes.color}`
+      //  photo = matching_shoes.picture
       const botMessage = {
         _id: new Date().getTime() + 1,
         text:formattedText,
