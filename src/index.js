@@ -1,5 +1,4 @@
 import { View, Text } from 'react-native';
-//sadfge
 import React, { useState } from 'react';
 import { GiftedChat, Send } from 'react-native-gifted-chat';
 import axios from 'axios';
@@ -8,7 +7,6 @@ const Chatbot = () => {
   const [messages, setMessages] = useState([]);
   const YOUR_CHATGPT_API_KEY = 'http://localhost:8000/shoes/43';
   const handleSend = async (newMessages = []) => {
-    console.log("hello i am fahad");
     try {
       const userMessage = newMessages[0];
       setMessages(previousMessages => GiftedChat.append(previousMessages, userMessage));
@@ -64,29 +62,30 @@ const Chatbot = () => {
        let userb=getBrand(messageText)
        let matching_shoes = []
        for (let index = 0; index < shoes.length; index++){ 
-          if (shoes[index].brand==userb) {
+          if (shoes[index].brand==userb||shoes[index].color == usercol) {
              matching_shoes.push(shoes[index])
-             //break
           }
-          if ( shoes[index].color == usercol){
-            matching_shoes.push(shoes[index])
+          else{
+            const botMessage = {
+              _id: new Date().getTime() + 1,
+              text: "shoe not available",
+              createdAt: new Date(),
+              user: {
+                _id: 2,
+                name: 'chatbot',
+                 avatar: 'https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdjkzNy1hZXctMTY1LWtsaGN3ZWNtLmpwZw.jpg'
+              }
+            };
+            setMessages(previousMessages => GiftedChat.append(previousMessages, botMessage));
+            break
           }
-
-          // else if (shoes[index].color==usercol) {
-          //     matching_shoes=shoes[index]
-          //     break
-          // }
        }
-
-       console.log('Users matching options are below')
-       console.log(matching_shoes)
-      //  formattedText=`shoe brand is ${matching_shoes.brand} and color is ${matching_shoes.color}`
-      //  photo = matching_shoes.picture
+      matching_shoes.forEach(shoe => {
       const botMessage = {
         _id: new Date().getTime() + 1,
-        text:formattedText,
+        text:`Shoe brand is ${shoe.brand} and color is ${shoe.color}`,
         createdAt: new Date(),
-        image: photo,
+        image: shoe.picture,
         user: {
           _id: 2,
           name: 'chatbot',
@@ -94,6 +93,7 @@ const Chatbot = () => {
         }
       };
       setMessages(previousMessages => GiftedChat.append(previousMessages, botMessage));
+       });
     } catch (error) {
       console.log(error);
     }
