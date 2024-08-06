@@ -60,26 +60,31 @@ const Chatbot = () => {
     }
        let usercol=getColor(messageText)
        let userb=getBrand(messageText)
-       let matching_shoes = []
-       for (let index = 0; index < shoes.length; index++){ 
-          if (shoes[index].brand==userb||shoes[index].color == usercol) {
-             matching_shoes.push(shoes[index])
-          }
-          else{
-            const botMessage = {
-              _id: new Date().getTime() + 1,
-              text: "shoe not available",
-              createdAt: new Date(),
-              user: {
-                _id: 2,
-                name: 'chatbot',
-                 avatar: 'https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdjkzNy1hZXctMTY1LWtsaGN3ZWNtLmpwZw.jpg'
-              }
-            };
-            setMessages(previousMessages => GiftedChat.append(previousMessages, botMessage));
-            break
-          }
+       let matching_shoes_first = [];
+       let matching_shoes_others = [];
+       for (let index = 0; index < shoes.length; index++){
+        if (shoes[index].brand==userb&&shoes[index].color == usercol) {
+          matching_shoes_first.push(shoes[index])
+         }
+         if (shoes[index].brand==userb||shoes[index].color == usercol) {
+          matching_shoes_others.push(shoes[index])
+         }
        }
+       let matching_shoes =  matching_shoes_first.concat(matching_shoes_others)
+       matching_shoes = Array.from(new Set(matching_shoes.map(shoe => JSON.stringify(shoe)))).map(shoe => JSON.parse(shoe))
+       if (matching_shoes.length==0) {
+        const botMessage = {
+          _id: new Date().getTime() + 1,
+          text: "shoe not available",
+          createdAt: new Date(),
+          user: {
+            _id: 2,
+            name: 'chatbot',
+             avatar: 'https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdjkzNy1hZXctMTY1LWtsaGN3ZWNtLmpwZw.jpg'
+          }
+        };
+        setMessages(previousMessages => GiftedChat.append(previousMessages, botMessage));
+      }
       matching_shoes.forEach(shoe => {
       const botMessage = {
         _id: new Date().getTime() + 1,
